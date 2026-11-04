@@ -16,6 +16,11 @@ jobs:
           gradle-version: 8.9
       - name: Estrai il progetto
         run: unzip -q ScreenLive.zip
+      - name: Correzioni al codice
+        run: |
+          F=ScreenLive/app/src/main/java/com/example/screenlive
+          sed -i '/override fun disableResources/,/^    }/d' $F/CropFilterRender.kt
+          sed -i 's/d.prepareVideo(outW, outH, fps, bitrate, 2, 0, 320)/d.prepareVideo(outW, outH, fps, bitrate, 0, 320)/' $F/StreamService.kt
       - name: Compila
         working-directory: ScreenLive
         run: gradle assembleDebug --no-daemon
